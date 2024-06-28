@@ -19,10 +19,9 @@ class LogoutBloc extends Bloc<LogoutEvent, LogoutState> {
       Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Token ${event.token}',
-        // 'X-CSRFToken': event.token,
       };
-      final response = await http.get(
-        Uri.parse('https://barbershops.pythonanywhere.com/api/countries'),
+      final response = await http.post(
+        Uri.parse('https://barbershops.pythonanywhere.com/api/logout/'),
         headers: headers,
       );
       Map<String, dynamic> res = jsonDecode(utf8.decode(response.bodyBytes));

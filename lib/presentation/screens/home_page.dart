@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../routes.dart';
 import '../blocs/login/login_bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -63,6 +64,7 @@ class _HomePageState extends State<HomePage> {
               style: GoogleFonts.montserrat(
                   fontSize: 30, fontWeight: FontWeight.w600),
             ),
+
             BlocBuilder<LoginBloc, LoginState>(
               builder: (context, state) {
                 if (state is LoginSuccess) {
@@ -71,18 +73,25 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            BlocProvider.of<LogoutBloc>(context).add(
-                              LogOutRequest(state.token)
-                            );
+                        BlocListener<LogoutBloc, LogoutState>(
+                          listener: (context, state) {
+                            if (state is LogoutSuccess) {
+                              Navigator.pushReplacementNamed(context, Routes.login);
+                            }
                           },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            color: kTextGreen2,
-                            child: Text(
-                              "Tizimdan chiqish",
-                              style: GoogleFonts.montserrat(fontSize: 20),
+                          child: GestureDetector(
+                            onTap: () {
+                              BlocProvider.of<LogoutBloc>(context).add(
+                                  LogOutRequest(state.token)
+                              );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              color: kTextGreen2,
+                              child: Text(
+                                "Tizimdan chiqish",
+                                style: GoogleFonts.montserrat(fontSize: 20),
+                              ),
                             ),
                           ),
                         ),
