@@ -1,0 +1,21 @@
+{
+  "lang": "Russian",
+  "signin": "Войти",
+  "successful": "Успешно!",
+  "welcome": "Добро пожаловать",
+  "warning": "Предупреждение!",
+  "enterLogin": "Введите логин",
+  "enterPassword": "Введите пароль",
+  "forgetPassword": "Забыли пароль?",
+  "additionalLinks": "Доп. ссылки",
+  "chooseLang": "Выберите язык",
+  "loading": "Загрузка...",
+  "newUser": "Вы новый?",
+  "register": "Зарегистрировать"
+
+
+
+
+
+
+}

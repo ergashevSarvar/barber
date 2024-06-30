@@ -17,3 +17,13 @@ class LoginRequested extends LoginEvent {
   @override
   List<Object> get props => [username, password];
 }
+
+class GetUserByIdRequest extends LoginEvent {
+  final String userId;
+  final String token;
+
+  const GetUserByIdRequest(this.userId, this.token);
+
+  @override
+  List<Object> get props => [userId, token];
+}
