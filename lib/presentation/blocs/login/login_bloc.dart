@@ -42,7 +42,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print(res);
       if (response.statusCode == 200) {
         emit(LoginSuccess(res['status_code_name'], res['token'], res['user_id']));
-        prefs.setInt("userId", res['user_id']);
+        prefs.setString("userId", res['user_id']);
       } else if(response.statusCode == 401){
         emit(LoginFailure(res['status_code_name']));
       } else {
@@ -60,12 +60,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         'Content-Type': 'application/json',
         'Authorization': 'Token ${event.token}',
       };
+      print("https://barbershops.pythonanywhere.com/api/users/${event.userId}");
       final response = await http.get(
         Uri.parse('https://barbershops.pythonanywhere.com/api/users/${event.userId}'),
           headers: headers
       );
-      print(event.token);
-      print(event.userId);
       Map<String, dynamic> res = jsonDecode(utf8.decode(response.bodyBytes));
       print(res);
       if (response.statusCode == 200) {

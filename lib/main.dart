@@ -25,6 +25,8 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
 
+  final Routes _routes = Routes();
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -41,6 +43,7 @@ class _MainAppState extends State<MainApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: color2022),
             useMaterial3: true,
           ),
+          routes: {},
           initialRoute: Routes.login,
           translations: LocalString(),
           locale: Locale("ru"),
@@ -49,4 +52,6 @@ class _MainAppState extends State<MainApp> {
         )
     );
   }
+
+
 }

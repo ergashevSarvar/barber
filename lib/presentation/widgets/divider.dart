@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/color.dart';
@@ -33,3 +35,4 @@ class CustomDivider extends StatelessWidget {
     ],);
   }
 }
+

@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                         BlocBuilder<RegisterBloc, RegisterState>(
                           builder: (context, state) {
                             return TextFormField(
-                              initialValue: state is RegisterSuccess ? "${state.username}" : "men1",
+                              initialValue: state is RegisterSuccess ? "${state.username}" : "sarvar",
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "enterLogin".tr;
