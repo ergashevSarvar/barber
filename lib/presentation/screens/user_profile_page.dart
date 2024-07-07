@@ -70,7 +70,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               ),
                               verticalSpace(15),
                               Text(
-                                state,
+                                "Sarvar Ergashev",
                                 style: GoogleFonts.montserrat(fontSize: 25, fontWeight: FontWeight.w600, color: kWhite),
                               )
                             ],
