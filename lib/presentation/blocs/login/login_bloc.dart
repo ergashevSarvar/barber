@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:barber/data/models/login.dart';
+import 'package:barber/data/models/userProfile.dart';
 import 'package:bloc/bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:equatable/equatable.dart';
@@ -68,7 +69,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       Map<String, dynamic> res = jsonDecode(utf8.decode(response.bodyBytes));
       print(res);
       if (response.statusCode == 200) {
-        emit(FetchUserSuccess());
+        UserProfile userProfile = UserProfile.fromJson(res);
+        emit(FetchUserSuccess(userProfile));
       } else if(response.statusCode == 401){
         emit(FetchUserFailure(res['status_code_name']));
       } else {
