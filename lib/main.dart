@@ -11,19 +11,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:barber/presentation/controller/init_controller.dart' as di;
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final onboarding = prefs.getBool("onboarding")??false;
   await di.init();
-  runApp(MainApp());
+  runApp(MainApp(onboarding: onboarding));
 }
 
-class MainApp extends StatefulWidget {
-  @override
-  State<MainApp> createState() => _MainAppState();
-}
-
-class _MainAppState extends State<MainApp> {
+class MainApp extends StatelessWidget {
+  final bool onboarding;
+  MainApp({super.key, this.onboarding = false});
 
   final Routes _routes = Routes();
 
@@ -44,7 +44,7 @@ class _MainAppState extends State<MainApp> {
             useMaterial3: true,
           ),
           routes: {},
-          initialRoute: Routes.login,
+          initialRoute: /*onboarding ? Routes.login :*/ Routes.onBoarding,
           translations: LocalString(),
           locale: Locale("ru"),
           builder: EasyLoading.init(),
@@ -52,6 +52,4 @@ class _MainAppState extends State<MainApp> {
         )
     );
   }
-
-
 }

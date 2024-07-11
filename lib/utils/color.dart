@@ -30,7 +30,8 @@ const Color lightGrey = Color(0xffD8D8D8);
 const Color lightGrey2 = Color(0xffeaeaea);
 const Color darkGrey = Color(0xff1D1D1D);
 const Color textGrey = Color(0xff676767);
-
+const Color textYellow = Color(0xffFFB901);
+const onBoardingColor = Color(0xFF7357a4);
 
 numberFormat(number) {
   if (number == null || number == "0" || number == "0.0" || number == "0.00") {

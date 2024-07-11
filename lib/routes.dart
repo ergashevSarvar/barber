@@ -1,3 +1,4 @@
+import 'package:barber/presentation/components/onboarding_view.dart';
 import 'package:barber/presentation/screens/calendar_page.dart';
 import 'package:barber/presentation/screens/chat_page.dart';
 import 'package:barber/presentation/screens/home_page.dart';
@@ -15,6 +16,7 @@ class Routes {
   static const String calendar_page = '/calendar_page';
   static const String chat_page = '/chat_page';
   static const String notification_page = '/notification_page';
+  static const String onBoarding = '/onboarding_view';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -32,6 +34,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => ChatPage());
       case notification_page:
         return MaterialPageRoute(builder: (_) => NotificationPage());
+      case onBoarding:
+        return MaterialPageRoute(builder: (_) => OnboardingView());
       default:
         return MaterialPageRoute(builder: (_) => LoginPage());
     }
