@@ -17,6 +17,13 @@ class FetchUserLoading extends LoginState {
 }
 
 class FetchUserSuccess extends LoginState {
+  late final UserProfile userProfile;
+
+  FetchUserSuccess(this.userProfile);
+
+  @override
+  List<Object> get props => [userProfile];
+
 }
 class FetchUserFailure extends LoginState {
   final String error;
