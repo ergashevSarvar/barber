@@ -17,13 +17,21 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final onboarding = prefs.getBool("onboarding")??false;
+  final currentLang = prefs.getString("lang");
+  Locale locale = Locale("uz");
+  if(currentLang == "fr") {
+    locale = Locale("fr");
+  } else if (currentLang == "ru"){
+    locale = Locale("ru");
+  }
   await di.init();
-  runApp(MainApp(onboarding: onboarding));
+  runApp(MainApp(onboarding: onboarding, locale: locale));
 }
 
 class MainApp extends StatelessWidget {
   final bool onboarding;
-  MainApp({super.key, this.onboarding = false});
+  final Locale locale;
+  MainApp({super.key, this.onboarding = false, required this.locale});
 
   final Routes _routes = Routes();
 
@@ -40,13 +48,12 @@ class MainApp extends StatelessWidget {
           title: 'Barber management app',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: color2022),
+            colorScheme: ColorScheme.fromSeed(seedColor: kWhite),
             useMaterial3: true,
           ),
-          routes: {},
-          initialRoute: /*onboarding ? Routes.login :*/ Routes.onBoarding,
+          initialRoute: onboarding ? Routes.signinType : Routes.onBoarding,
           translations: LocalString(),
-          locale: Locale("ru"),
+          locale: locale,
           builder: EasyLoading.init(),
           onGenerateRoute: Routes.generateRoute,
         )

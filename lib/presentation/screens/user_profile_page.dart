@@ -9,7 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../blocs/login/login_bloc.dart';
 import '../widgets/easy_loading.dart';
-import '../widgets/flashTabBar.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({super.key});
@@ -247,7 +246,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 ),
               ),
             ),
-            bottomNavigationBar: Flashtabbar(tabIndex: 4),
+            // bottomNavigationBar: Flashtabbar(tabIndex : 4),
           );
         } else if (state is FetchUserFailure) {
           Get.snackbar(

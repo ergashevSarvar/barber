@@ -11,15 +11,19 @@ class LanguageController extends GetxController {
     String? lang = prefs.getString('lang');
     if (lang != null) {
       Locale locale = Locale("uz");
-      if (lang == "en_US") {
+      if (lang == "en") {
         locale = Locale("en");
-      } else if (lang == "uz_UZ") {
+      } else if (lang == "uz") {
         locale = Locale("uz");
-      } else if (lang == "ru_RU") {
+      } else if (lang == "ru") {
         locale = Locale("ru");
       } else {
         locale = Locale("fr");
       }
+      Get.updateLocale(locale);
+    } else {
+      prefs.setString('lang', 'uz');
+      Locale locale = Locale("uz");
       Get.updateLocale(locale);
     }
   }

@@ -38,7 +38,6 @@ class LangBloc extends Bloc<LangEvent, LangState> {
         Uri.parse('https://barbershops.pythonanywhere.com/api/langs/'),
       );
       List res = jsonDecode(utf8.decode(response.bodyBytes));
-      print(res[0]['id']);
       if (response.statusCode == 200) {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         int langId = prefs.getInt("langId") ?? 1;

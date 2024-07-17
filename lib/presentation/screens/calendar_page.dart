@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/flashTabBar.dart';
 
 class CalendarPage extends StatefulWidget {
   const CalendarPage({super.key});
@@ -14,9 +13,9 @@ class _CalendarPageState extends State<CalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("PAGE"),
+        child: Text("_CalendarPageState"),
       ),
-      bottomNavigationBar: Flashtabbar(tabIndex: 3),
+      // bottomNavigationBar: Flashtabbar(tabIndex : 3),
     );
   }
 }

@@ -18,6 +18,7 @@ const Color kTextSuccess = Color(0xff28a745);
 const Color kTextWarning = Color(0xffffc107);
 const Color kTextInfo = Color(0xff17a2b8);
 const Color kTextDanger = Color(0xffdc3545);
+const Color kTextDanger2 = Color(0xffE01C42);
 const Color kTextWarning2 = Color(0xffd78c05);
 const Color kTextSecondary = Color(0xffadb7be);
 const Color kTextGreen = Color(0xff357c1c);
@@ -28,9 +29,12 @@ const Color color2018 = Color(0xff714694);
 const Color colorMy = Color(0xff018bd5);
 const Color lightGrey = Color(0xffD8D8D8);
 const Color lightGrey2 = Color(0xffeaeaea);
+const Color lightGrey3 = Color(0xffbdbdbd);
 const Color darkGrey = Color(0xff1D1D1D);
 const Color textGrey = Color(0xff676767);
 const Color textYellow = Color(0xffFFB901);
+const Color textYellow2 = Color(0xffFFB900);
+const Color textYellowLight = Color(0x17ffb901);
 const onBoardingColor = Color(0xFF7357a4);
 
 numberFormat(number) {
