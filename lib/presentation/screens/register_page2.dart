@@ -66,7 +66,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
                 ));
           } else if (state is RegisterSuccess) {
             EasyLoading.dismiss();
-            Navigator.pushReplacementNamed(context, Routes.signinPage);
+            Navigator.pushNamed(context, Routes.signinPage);
             Get.snackbar(
               "successful".tr,
               state.message,
@@ -327,7 +327,7 @@ class _RegisterPage2State extends State<RegisterPage2> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushReplacementNamed(context, Routes.signinType);
+                            Navigator.pushNamed(context, Routes.signinType);
                           },
                           child: Text(
                             "enterSystem".tr,

@@ -70,7 +70,7 @@ class _SigninPageState extends State<SigninPage> {
                 ));
           } else if (state is LoginSuccess) {
             EasyLoading.dismiss();
-            Navigator.pushReplacementNamed(context, Routes.homePageRouter);
+            Navigator.pushNamed(context, Routes.homePageRouter);
             if (!Get.isSnackbarOpen) {
               Get.snackbar(
                 "successful".tr,
@@ -305,7 +305,7 @@ class _SigninPageState extends State<SigninPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushReplacementNamed(context, Routes.registerPage);
+                            Navigator.pushNamed(context, Routes.registerPage);
                           },
                           child: Text(
                             "register".tr,

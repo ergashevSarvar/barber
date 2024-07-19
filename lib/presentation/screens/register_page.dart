@@ -34,7 +34,7 @@ class _RegisterPageState extends State<RegisterPage> {
           EasyLoading.show(status: "loading".tr);
         } else if (state is RegisterSuccess) {
           EasyLoading.dismiss();
-          Navigator.pushReplacementNamed(context, Routes.signinPage);
+          Navigator.pushNamed(context, Routes.signinPage);
           Get.snackbar(
             "successful".tr,
             state.message,
@@ -71,7 +71,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                            onTap: () => Navigator.pushReplacementNamed(context, Routes.signinPage),
+                            onTap: () => Navigator.pushNamed(context, Routes.signinPage),
                             child: const Icon(
                               Icons.arrow_back_ios,
                               size: 22,

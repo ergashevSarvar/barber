@@ -119,7 +119,7 @@ class _SigninTypesPageState extends State<SigninTypesPage> {
                       verticalSpace(25),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacementNamed(context, Routes.signinPage);
+                          Navigator.pushNamed(context, Routes.signinPage);
                         },
                         child: Container(
                           width: double.infinity,
@@ -244,7 +244,7 @@ class _SigninTypesPageState extends State<SigninTypesPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacementNamed(context, Routes.registerPage);
+                          Navigator.pushNamed(context, Routes.registerPage);
                         },
                         child: Text(
                           "register".tr,

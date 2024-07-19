@@ -1,3 +1,4 @@
+import 'package:barber/presentation/controller/page_controller.dart';
 import 'package:barber/presentation/widgets/verticalHorizontalSpace.dart';
 import 'package:barber/routes.dart';
 import 'package:barber/utils/color.dart';
@@ -13,6 +14,9 @@ class ChangeLangPage extends StatefulWidget {
 }
 
 class _ChangeLangPageState extends State<ChangeLangPage> {
+
+  GetxPageController getxPageController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -28,7 +32,8 @@ class _ChangeLangPageState extends State<ChangeLangPage> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, Routes.homePageRouter, arguments: 5);
+                    Navigator.pushNamed(context, Routes.homePageRouter);
+                    getxPageController.currentPage.value = "changeLangPage";
                   },
                   child: Container(
                     padding: EdgeInsets.all(10),

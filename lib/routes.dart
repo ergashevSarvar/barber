@@ -28,11 +28,11 @@ class Routes {
   static const String changeLangPage = '/changeLangPage';
   static const String homePageRouter = '/homePageRouter';
 
+
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case homePageRouter:
-        final int index = settings.arguments == null ? 99 : settings.arguments as int;
-        return MaterialPageRoute(builder: (_) => HomePageRouter(index: index));
+        return MaterialPageRoute(builder: (_) => HomePageRouter());
       case register:
         return MaterialPageRoute(builder: (_) => RegisterPage());
       case user_profile:

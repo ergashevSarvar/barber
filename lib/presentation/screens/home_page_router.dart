@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:barber/presentation/blocs/logout/logout_bloc.dart';
+import 'package:barber/presentation/controller/page_controller.dart';
 import 'package:barber/presentation/screens/calendar_page.dart';
 import 'package:barber/presentation/screens/chat_page.dart';
 import 'package:barber/presentation/screens/home_page.dart';
@@ -12,20 +15,22 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../routes.dart';
 import '../blocs/login/login_bloc.dart';
 
 class HomePageRouter extends StatefulWidget {
-  final int index;
 
-  HomePageRouter({super.key, required this.index});
+  HomePageRouter({super.key});
 
   @override
   State<HomePageRouter> createState() => _HomePageRouterState();
 }
 
 class _HomePageRouterState extends State<HomePageRouter> {
+  GetxPageController getxPageController = Get.find();
+
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
@@ -40,18 +45,25 @@ class _HomePageRouterState extends State<HomePageRouter> {
     setState(() {
       _selectedIndex = index;
     });
+    if (_selectedIndex == 0) {
+      getxPageController.currentPage.value = "home";
+    } else if (_selectedIndex == 1) {
+      getxPageController.currentPage.value = "chat_page";
+    } else if (_selectedIndex == 2) {
+      getxPageController.currentPage.value = "notification_page";
+    } else if (_selectedIndex == 3) {
+      getxPageController.currentPage.value = "calendar_page";
+    } else if (_selectedIndex == 4) {
+      getxPageController.currentPage.value = "profilePage";
+    }
     print(_selectedIndex);
+    print(getxPageController.currentPage.value);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.index == 99) {
-      _selectedIndex = _selectedIndex;
-    } else if (widget.index == 5) {
-      _selectedIndex = 4;
-    }
-    // _selectedIndex = widget.index == 99 ? _selectedIndex : widget.index;
-    print(_selectedIndex);
+
+
     return Scaffold(
       backgroundColor: kWhite,
       body: _pages[_selectedIndex],

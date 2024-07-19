@@ -35,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ));
         } else if (state is LogoutSuccess) {
           EasyLoading.dismiss();
-          Navigator.pushReplacementNamed(context, Routes.signinType);
+          Navigator.pushNamed(context, Routes.signinType);
         }
       },
       child: Scaffold(
@@ -152,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 verticalSpace(17),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, Routes.changeLangPage);
+                    Navigator.pushNamed(context, Routes.changeLangPage);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
