@@ -9,6 +9,7 @@ import 'package:barber/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:barber/presentation/controller/init_controller.dart' as di;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,18 +45,23 @@ class MainApp extends StatelessWidget {
           BlocProvider(create: (context) => LogoutBloc()),
           BlocProvider(create: (context) => LangBloc()),
         ],
-        child: GetMaterialApp(
-          title: 'Barber management app',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: kWhite),
-            useMaterial3: true,
+        child: ScreenUtilInit(
+          designSize: Size(360,690),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          child: GetMaterialApp(
+            title: 'Barber management app',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: kWhite),
+              useMaterial3: true,
+            ),
+            initialRoute: onboarding ? Routes.signinType : Routes.onBoarding,
+            translations: LocalString(),
+            locale: locale,
+            builder: EasyLoading.init(),
+            onGenerateRoute: Routes.generateRoute,
           ),
-          initialRoute: onboarding ? Routes.signinType : Routes.onBoarding,
-          translations: LocalString(),
-          locale: locale,
-          builder: EasyLoading.init(),
-          onGenerateRoute: Routes.generateRoute,
         )
     );
   }

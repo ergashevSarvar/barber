@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../routes.dart';
@@ -159,7 +160,7 @@ class _SigninTypesPageState extends State<SigninTypesPage> {
                                         if (state is LangLoading) {
                                           return Padding(
                                             padding: const EdgeInsets.only(top: 60),
-                                            child: Center(child: CircularProgressIndicator()),
+                                            child: Center(child: LoadingAnimationWidget.threeArchedCircle(color: textYellow, size: 48)),
                                           );
                                         } else if (state is LangSuccess) {
                                           return ListView.separated(

@@ -21,7 +21,6 @@ import '../../routes.dart';
 import '../blocs/login/login_bloc.dart';
 
 class HomePageRouter extends StatefulWidget {
-
   HomePageRouter({super.key});
 
   @override
@@ -42,6 +41,7 @@ class _HomePageRouterState extends State<HomePageRouter> {
   ];
 
   void _onItemTapped(int index) {
+
     setState(() {
       _selectedIndex = index;
     });
@@ -56,13 +56,13 @@ class _HomePageRouterState extends State<HomePageRouter> {
     } else if (_selectedIndex == 4) {
       getxPageController.currentPage.value = "profilePage";
     }
-    print(_selectedIndex);
-    print(getxPageController.currentPage.value);
   }
 
   @override
   Widget build(BuildContext context) {
-
+    if (getxPageController.currentPage.value == "changeLangPage") {
+      _selectedIndex = 4;
+    }
 
     return Scaffold(
       backgroundColor: kWhite,
@@ -89,11 +89,11 @@ class _HomePageRouterState extends State<HomePageRouter> {
           indexSelected: _selectedIndex,
           onTap: _onItemTapped,
           items: [
-            TabItem(icon: Icons.home_outlined, title: 'Bosh sahifa'),
-            TabItem(icon: Icons.map_outlined, title: 'Xarita'),
+            TabItem(icon: Icons.home_outlined, title: 'homePage'.tr),
+            TabItem(icon: Icons.map_outlined, title: 'mapPage'.tr),
             TabItem(icon: Icons.cut, title: ''),
-            TabItem(icon: Icons.message_outlined, title: 'Xabarlar'),
-            TabItem(icon: Icons.person, title: 'Kabinet'),
+            TabItem(icon: Icons.message_outlined, title: 'messagePage'.tr),
+            TabItem(icon: Icons.person, title: 'cabinetPage'.tr),
           ],
           backgroundColor: Colors.white,
           color: Colors.grey,

@@ -5,13 +5,16 @@ import 'package:barber/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../routes.dart';
+import '../blocs/langs/lang_bloc.dart';
 import '../blocs/login/login_bloc.dart';
+import '../controller/page_controller.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -21,6 +24,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  GetxPageController getxPageController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,6 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
         } else if (state is LogoutSuccess) {
           EasyLoading.dismiss();
           Navigator.pushNamed(context, Routes.signinType);
+          getxPageController.currentPage.value = "signinType";
         }
       },
       child: Scaffold(
@@ -90,6 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 GestureDetector(
                   onTap: () {
                     // new page here
+                    Navigator.pushNamed(context, Routes.updateProfile);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           SvgPicture.asset("assets/svg/User_alt_light.svg", width: 30),
                           horizontalSpace(10),
-                          Text("persoalData".tr, style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("persoalData".tr, style: GoogleFonts.montserrat(fontSize: 15.sp, fontWeight: FontWeight.w500)),
                         ],
                       ),
                       Icon(Icons.arrow_forward_ios, color: Color(0xff666D80), size: 20)
@@ -117,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           SvgPicture.asset("assets/svg/Wallet_light.svg", width: 30),
                           horizontalSpace(10),
-                          Text("payment".tr, style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("payment".tr, style: GoogleFonts.montserrat(fontSize: 15.sp, fontWeight: FontWeight.w500)),
                         ],
                       ),
                       Icon(Icons.arrow_forward_ios, color: Color(0xff666D80), size: 20)
@@ -136,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           SvgPicture.asset("assets/svg/security.svg", width: 26),
                           horizontalSpace(10),
-                          Text("security".tr, style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("security".tr, style: GoogleFonts.montserrat(fontSize: 15.sp, fontWeight: FontWeight.w500)),
                         ],
                       ),
                       Icon(Icons.arrow_forward_ios, color: Color(0xff666D80), size: 20)
@@ -152,7 +159,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 verticalSpace(17),
                 GestureDetector(
                   onTap: () {
+                    context.read<LangBloc>().add(LangRequest());
                     Navigator.pushNamed(context, Routes.changeLangPage);
+                    getxPageController.currentPage.value = "changeLangPage";
+
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,7 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           SvgPicture.asset("assets/svg/language.svg", width: 26),
                           horizontalSpace(10),
-                          Text("language".tr, style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("language".tr, style: GoogleFonts.montserrat(fontSize: 15.sp, fontWeight: FontWeight.w500)),
                         ],
                       ),
                       Icon(Icons.arrow_forward_ios, color: Color(0xff666D80), size: 20)
@@ -180,7 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           SvgPicture.asset("assets/svg/Bell_light.svg", width: 30),
                           horizontalSpace(10),
-                          Text("notification".tr, style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("notification".tr, style: GoogleFonts.montserrat(fontSize: 15.sp, fontWeight: FontWeight.w500)),
                         ],
                       ),
                       Icon(Icons.arrow_forward_ios, color: Color(0xff666D80), size: 20)
@@ -199,10 +209,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           SvgPicture.asset("assets/svg/Trash_light.svg", width: 30),
                           horizontalSpace(10),
-                          Text("cache".tr, style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("cache".tr, style: GoogleFonts.montserrat(fontSize: 15.sp, fontWeight: FontWeight.w500)),
                         ],
                       ),
-                      Text("88 mb", style: GoogleFonts.montserrat(fontSize: 17, fontWeight: FontWeight.w500, color: Color(0xff666D80))),
+                      Row(
+                        children: [
+                          Text("88", style: GoogleFonts.montserrat(fontSize: 17, fontWeight: FontWeight.w500, color: Color(0xff666D80))),
+                          horizontalSpace(5),
+                          Text("mb".tr, style: GoogleFonts.montserrat(fontSize: 17, fontWeight: FontWeight.w500, color: Color(0xff666D80))),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -216,6 +232,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 GestureDetector(
                   onTap: () {
                     // new page here
+                    Navigator.pushNamed(context, Routes.helpPage);
+                    getxPageController.currentPage.value = "helpPage";
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -224,7 +242,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           SvgPicture.asset("assets/svg/Question_light.svg", width: 30),
                           horizontalSpace(10),
-                          Text("helpCenter".tr, style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("helpCenter".tr, style: GoogleFonts.montserrat(fontSize: 15.sp, fontWeight: FontWeight.w500)),
                         ],
                       ),
                       Icon(Icons.arrow_forward_ios, color: Color(0xff666D80), size: 20)
@@ -234,7 +252,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 verticalSpace(17),
                 GestureDetector(
                   onTap: () {
-                    // new page here
+                    Navigator.pushNamed(context, Routes.privacyPolicyPage);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -243,7 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           SvgPicture.asset("assets/svg/Lock_light.svg", width: 30),
                           horizontalSpace(10),
-                          Text("privacyPolicy".tr, style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("privacyPolicy".tr, style: GoogleFonts.montserrat(fontSize: 15.sp, fontWeight: FontWeight.w500)),
                         ],
                       ),
                       Icon(Icons.arrow_forward_ios, color: Color(0xff666D80), size: 20)
@@ -262,7 +280,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           SvgPicture.asset("assets/svg/info_light.svg", width: 30),
                           horizontalSpace(10),
-                          Text("aboutApp".tr, style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("aboutApp".tr, style: GoogleFonts.montserrat(fontSize: 15.sp, fontWeight: FontWeight.w500)),
                         ],
                       ),
                       Icon(Icons.arrow_forward_ios, color: Color(0xff666D80), size: 20)
@@ -282,7 +300,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           horizontalSpace(3),
                           SvgPicture.asset("assets/svg/terms.svg", width: 30),
                           horizontalSpace(10),
-                          Text("termCondition".tr, style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500)),
+                          Text("termCondition".tr, style: GoogleFonts.montserrat(fontSize: 15.sp, fontWeight: FontWeight.w500)),
                         ],
                       ),
                       Icon(Icons.arrow_forward_ios, color: Color(0xff666D80), size: 20)
@@ -345,7 +363,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         child: Text(
                                           "cancel".tr,
                                           textAlign: TextAlign.center,
-                                          style: GoogleFonts.montserrat(color: kTextDanger2, fontWeight: FontWeight.w600, fontSize: 18),
+                                          style: GoogleFonts.montserrat(color: kTextDanger2, fontWeight: FontWeight.w600, fontSize: 15.sp),
                                         ),
                                       ),
                                     ),
@@ -363,7 +381,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               child: Text(
                                                 "accept".tr,
                                                 textAlign: TextAlign.center,
-                                                style: GoogleFonts.montserrat(color: kWhite, fontWeight: FontWeight.w600, fontSize: 18),
+                                                style: GoogleFonts.montserrat(color: kWhite, fontWeight: FontWeight.w600, fontSize: 15.sp),
                                               ),
                                             ),
                                           );
@@ -384,7 +402,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       horizontalSpace(3),
                       SvgPicture.asset("assets/svg/Sign_in_circle_light.svg", width: 30, color: kTextDanger),
                       horizontalSpace(10),
-                      Text("signOut".tr, style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500, color: kTextDanger)),
+                      Text("signOut".tr, style: GoogleFonts.montserrat(fontSize: 15.sp, fontWeight: FontWeight.w500, color: kTextDanger)),
                     ],
                   ),
                 ),

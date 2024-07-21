@@ -2,14 +2,17 @@ import 'package:barber/presentation/components/onboarding_view.dart';
 import 'package:barber/presentation/screens/calendar_page.dart';
 import 'package:barber/presentation/screens/change_lang_page.dart';
 import 'package:barber/presentation/screens/chat_page.dart';
+import 'package:barber/presentation/screens/help_page.dart';
 import 'package:barber/presentation/screens/home_page.dart';
 import 'package:barber/presentation/screens/home_page_router.dart';
 import 'package:barber/presentation/screens/notification_page.dart';
+import 'package:barber/presentation/screens/privacy_policy_page.dart';
 import 'package:barber/presentation/screens/profile_page.dart';
 import 'package:barber/presentation/screens/register_page.dart';
 import 'package:barber/presentation/screens/register_page2.dart';
 import 'package:barber/presentation/screens/signin_page.dart';
 import 'package:barber/presentation/screens/signin_types_page.dart';
+import 'package:barber/presentation/screens/update_profile.dart';
 import 'package:barber/presentation/screens/user_profile_page.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +30,9 @@ class Routes {
   static const String profilePage = '/profilePage';
   static const String changeLangPage = '/changeLangPage';
   static const String homePageRouter = '/homePageRouter';
+  static const String helpPage = '/helpPage';
+  static const String privacyPolicyPage = '/privacyPolicyPage';
+  static const String updateProfile = '/updateProfile';
 
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -59,6 +65,12 @@ class Routes {
         return MaterialPageRoute(builder: (_) => ChangeLangPage());
       case home:
         return MaterialPageRoute(builder: (_) => HomePage());
+      case helpPage:
+        return MaterialPageRoute(builder: (_) => HelpPage());
+      case privacyPolicyPage:
+        return MaterialPageRoute(builder: (_) => HelpPage());
+      case updateProfile:
+        return MaterialPageRoute(builder: (_) => UpdateProfile());
       default:
         return MaterialPageRoute(builder: (_) => SigninPage());
     }
