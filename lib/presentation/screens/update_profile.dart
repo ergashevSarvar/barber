@@ -23,8 +23,9 @@ class UpdateProfile extends StatefulWidget {
   State<UpdateProfile> createState() => _UpdateProfileState();
 }
 
-class _UpdateProfileState extends State<UpdateProfile> {
+class _UpdateProfileState extends State<UpdateProfile> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
+  final _formKey2 = GlobalKey<FormState>();
   String _username = '';
   String _password = '';
   String _password2 = '';
@@ -34,8 +35,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
   String _firstName = '';
   String _lastName = '';
 
-  List<FocusNode> _focusNodes = List.generate(10, (index) => FocusNode());
-  List<bool> _isFocused = List.generate(10, (index) => false);
+  List<FocusNode> _focusNodes = List.generate(15, (index) => FocusNode());
+  List<bool> _isFocused = List.generate(15, (index) => false);
 
   @override
   void initState() {
@@ -59,6 +60,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   @override
   Widget build(BuildContext context) {
+    TabController _tabController = TabController(length: 3, vsync: this);
     return SafeArea(
         child: Scaffold(
       backgroundColor: kWhite,
@@ -88,280 +90,417 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   horizontalSpace(18),
                 ],
               ),
-              verticalSpace(10),
-              Stack(children: [
-                Container(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(80),
-                    child: Image.asset(
-                      "assets/images/sarvar.jpg",
-                      width: 100,
+              verticalSpace(15),
+              Container(
+                child: TabBar(
+                  controller: _tabController,
+                  labelColor: textYellow,
+                  unselectedLabelColor: kGrey,
+                  dividerColor: kGrey,
+                  dividerHeight: 0.2,
+                  indicator: UnderlineTabIndicator(borderSide: BorderSide(width: 4, color: textYellow), insets: EdgeInsets.symmetric(horizontal: -15)),
+                  indicatorColor: textYellow,
+                  indicatorWeight: 1,
+                  labelStyle: GoogleFonts.montserrat(fontWeight: FontWeight.w500),
+                  tabs: [
+                    Tab(
+                      text: "Umumiy",
                     ),
-                  ),
+                    Tab(text: "Manzil"),
+                    Tab(text: "Parol"),
+                  ],
                 ),
-                Positioned(
-                  bottom: 5,
-                  right: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(color: textYellow, borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Icon(
-                      Icons.edit_outlined,
-                      color: kWhite,
-                      size: 15,
+              ),
+              Container(
+                width: double.maxFinite,
+                height: MediaQuery.of(context).size.height,
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    Column(
+                      children: [
+                        verticalSpace(20),
+                        Stack(children: [
+                          Container(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(80),
+                              child: Image.asset(
+                                "assets/images/sarvar.jpg",
+                                width: 100,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 5,
+                            right: 0,
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(color: textYellow, borderRadius: BorderRadius.all(Radius.circular(10))),
+                              child: Icon(
+                                Icons.edit_outlined,
+                                color: kWhite,
+                                size: 15,
+                              ),
+                            ),
+                          )
+                        ]),
+                        verticalSpace(10),
+                        BlocBuilder<LoginBloc, LoginState>(
+                          builder: (context, state) {
+                            if (state is LoginSuccess) {
+                              context.read<LoginBloc>().add(GetUserByIdRequest(state.userId, state.token));
+                            } else if (state is FetchUserLoading) {
+                              EasyLoading.show(
+                                  status: "loading".tr,
+                                  indicator: LoadingAnimationWidget.threeArchedCircle(
+                                    color: textYellow,
+                                    size: 70,
+                                  ));
+                            } else if (state is FetchUserSuccess) {
+                              EasyLoading.dismiss();
+                              return Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'firstName'.tr,
+                                            style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
+                                          ),
+                                          verticalSpace(8),
+                                          TextFormField(
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return "firstNameErr1".tr;
+                                              }
+                                              return null;
+                                            },
+                                            onSaved: (value) => _firstName = value!,
+                                            focusNode: _focusNodes[1],
+                                            initialValue: state.userProfile.firstname,
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                                            ],
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: _isFocused[1] ? textYellowLight : Colors.white,
+                                              errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                              hintText: "enterFirstname".tr,
+                                              hintStyle: GoogleFonts.montserrat(),
+                                              labelStyle: GoogleFonts.montserrat(color: textGrey),
+                                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
+                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
+                                              focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      verticalSpace(15),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'lastName'.tr,
+                                            style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
+                                          ),
+                                          verticalSpace(8),
+                                          TextFormField(
+                                            initialValue: state.userProfile.lastname,
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return "lastNameErr1".tr;
+                                              }
+                                              return null;
+                                            },
+                                            onSaved: (value) => _lastName = value!,
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                                            ],
+                                            focusNode: _focusNodes[2],
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: _isFocused[2] ? textYellowLight : Colors.white,
+                                              errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                              hintText: "enterLastname".tr,
+                                              hintStyle: GoogleFonts.montserrat(),
+                                              labelStyle: GoogleFonts.montserrat(color: textGrey),
+                                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
+                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
+                                              focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      verticalSpace(15),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'login'.tr,
+                                            style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
+                                          ),
+                                          verticalSpace(8),
+                                          TextFormField(
+                                            initialValue: state.userProfile.username,
+                                            readOnly: true,
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                                            ],
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return "loginErr1".tr;
+                                              }
+                                              return null;
+                                            },
+                                            onSaved: (value) => _username = value!,
+                                            focusNode: _focusNodes[3],
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: _isFocused[3] ? textYellowLight : Colors.white,
+                                              errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                              hintText: "enterLogin".tr,
+                                              hintStyle: GoogleFonts.montserrat(),
+                                              labelStyle: GoogleFonts.montserrat(color: textGrey),
+                                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
+                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
+                                              focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      verticalSpace(15),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'email'.tr,
+                                            style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
+                                          ),
+                                          verticalSpace(8),
+                                          TextFormField(
+                                            initialValue: state.userProfile.email,
+                                            readOnly: true,
+                                            onSaved: (value) => _email = value!,
+                                            focusNode: _focusNodes[4],
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9@.\-_]')),
+                                            ],
+                                            validator: (value) {
+                                              if (value == null || value.isEmpty) {
+                                                return null;
+                                              }
+                                              final emailRegex = RegExp(
+                                                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                                              );
+                                              if (!emailRegex.hasMatch(value)) {
+                                                return 'Email manzil formati xato kiritilgan';
+                                              }
+                                              return null;
+                                            },
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: _isFocused[4] ? textYellowLight : Colors.white,
+                                              errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                              hintText: "enterEmail".tr,
+                                              hintStyle: GoogleFonts.montserrat(),
+                                              labelStyle: GoogleFonts.montserrat(color: textGrey),
+                                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
+                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
+                                              focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      verticalSpace(15),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'phoneNumber'.tr,
+                                            style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
+                                          ),
+                                          verticalSpace(8),
+                                          TextFormField(
+                                            initialValue: "${state.userProfile.phone[0]}",
+                                            onSaved: (value) => _phoneNumber = value!,
+                                            focusNode: _focusNodes[5],
+                                            keyboardType: TextInputType.number,
+                                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                            validator: (value) {
+                                              if (value == null) {
+                                                return "phoneNumberErr1".tr;
+                                              }
+                                              return null;
+                                            },
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: _isFocused[5] ? textYellowLight : Colors.white,
+                                              errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                              prefix: Text("+"),
+                                              hintText: "phoneNumber".tr,
+                                              hintStyle: GoogleFonts.montserrat(),
+                                              labelStyle: GoogleFonts.montserrat(color: textGrey),
+                                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
+                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
+                                              focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      verticalSpace(15),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'birthday'.tr,
+                                            style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
+                                          ),
+                                          verticalSpace(8),
+                                          TextFormField(
+                                            initialValue: _birthday.isEmpty ? "${DateFormat('dd.MM.yyyy').format(DateTime.parse(state.userProfile.birthdate))}" : _birthday,
+                                            readOnly: true,
+                                            onSaved: (value) => _birthday = value!,
+                                            focusNode: _focusNodes[6],
+                                            keyboardType: TextInputType.number,
+                                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                            validator: (value) {
+                                              if (value == null) {
+                                                return "birthdayErr1".tr;
+                                              }
+                                              return null;
+                                            },
+                                            decoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: _isFocused[6] ? textYellowLight : Colors.white,
+                                              errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                              hintText: "enterBirthday".tr,
+                                              hintStyle: GoogleFonts.montserrat(),
+                                              labelStyle: GoogleFonts.montserrat(color: textGrey),
+                                              suffixIcon: GestureDetector(child: Icon(Icons.date_range, color: textGrey, size: 26), onTap: () => _openDatePicker(context)),
+                                              enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
+                                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
+                                              focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ));
+                            }
+                            return Center(
+                              child: CustomEasyLoading(),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ),
-                )
-              ]),
-              verticalSpace(20),
-              BlocBuilder<LoginBloc, LoginState>(
-                builder: (context, state) {
-                  if (state is LoginSuccess) {
-                    context.read<LoginBloc>().add(GetUserByIdRequest(state.userId, state.token));
-                  } else if (state is FetchUserLoading) {
-                    EasyLoading.show(
-                        status: "loading".tr,
-                        indicator: LoadingAnimationWidget.threeArchedCircle(
-                          color: textYellow,
-                          size: 70,
-                        ));
-                  } else if (state is FetchUserSuccess) {
-                    EasyLoading.dismiss();
-                    return Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    Text("Hi2"),
+                    Column(
+                      children: [
+                        Form(
+                            key: _formKey2,
+                            child: Column(
                               children: [
-                                Text(
-                                  'firstName'.tr,
-                                  style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
-                                ),
-                                verticalSpace(8),
-                                TextFormField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "firstNameErr1".tr;
-                                    }
-                                    return null;
-                                  },
-                                  onSaved: (value) => _firstName = value!,
-                                  focusNode: _focusNodes[1],
-                                  initialValue: state.userProfile.firstname,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                                verticalSpace(25),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'password'.tr,
+                                      style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
+                                    ),
+                                    verticalSpace(8),
+                                    TextFormField(
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "passwordErr1".tr;
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) => _password = value!,
+                                      focusNode: _focusNodes[7],
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: _isFocused[7] ? textYellowLight : Colors.white,
+                                        errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                        hintText: "enterPassword".tr,
+                                        hintStyle: GoogleFonts.montserrat(),
+                                        labelStyle: GoogleFonts.montserrat(color: textGrey),
+                                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
+                                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
+                                        focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                      ),
+                                    ),
                                   ],
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: _isFocused[1] ? textYellowLight : Colors.white,
-                                    errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
-                                    hintText: "enterFirstname".tr,
-                                    hintStyle: GoogleFonts.montserrat(),
-                                    labelStyle: GoogleFonts.montserrat(color: textGrey),
-                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
-                                    focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
-                                  ),
                                 ),
-                              ],
-                            ),
-                            verticalSpace(15),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'lastName'.tr,
-                                  style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
-                                ),
-                                verticalSpace(8),
-                                TextFormField(
-                                  initialValue: state.userProfile.lastname,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "lastNameErr1".tr;
-                                    }
-                                    return null;
-                                  },
-                                  onSaved: (value) => _lastName = value!,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                                verticalSpace(15),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'enterPassword2'.tr,
+                                      style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
+                                    ),
+                                    verticalSpace(8),
+                                    TextFormField(
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "passwordErr1".tr;
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) => _password2 = value!,
+                                      focusNode: _focusNodes[8],
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: _isFocused[8] ? textYellowLight : Colors.white,
+                                        errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                        hintText: "enterPassword2".tr,
+                                        hintStyle: GoogleFonts.montserrat(),
+                                        labelStyle: GoogleFonts.montserrat(color: textGrey),
+                                        enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
+                                        focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
+                                        focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                      ),
+                                    ),
                                   ],
-                                  focusNode: _focusNodes[2],
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: _isFocused[2] ? textYellowLight : Colors.white,
-                                    errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
-                                    hintText: "enterLastname".tr,
-                                    hintStyle: GoogleFonts.montserrat(),
-                                    labelStyle: GoogleFonts.montserrat(color: textGrey),
-                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
-                                    focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
+                                ),
+                                verticalSpace(15),
+                                Container(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        _formKey.currentState!.save();
+                                        BlocProvider.of<LoginBloc>(context).add(
+                                          LoginRequested(_username, _password),
+                                        );
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        elevation: 2,
+                                        backgroundColor: textYellow,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8),
+                                        )),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Text(
+                                        "save".tr,
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.montserrat(color: kWhite, fontWeight: FontWeight.w600, fontSize: 18),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
-                            ),
-                            verticalSpace(15),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'login'.tr,
-                                  style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
-                                ),
-                                verticalSpace(8),
-                                TextFormField(
-                                  initialValue: state.userProfile.username,
-                                  readOnly: true,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
-                                  ],
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return "loginErr1".tr;
-                                    }
-                                    return null;
-                                  },
-                                  onSaved: (value) => _username = value!,
-                                  focusNode: _focusNodes[3],
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: _isFocused[3] ? textYellowLight : Colors.white,
-                                    errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
-                                    hintText: "enterLogin".tr,
-                                    hintStyle: GoogleFonts.montserrat(),
-                                    labelStyle: GoogleFonts.montserrat(color: textGrey),
-                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
-                                    focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            verticalSpace(15),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'email'.tr,
-                                  style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
-                                ),
-                                verticalSpace(8),
-                                TextFormField(
-                                  initialValue: state.userProfile.email,
-                                  readOnly: true,
-                                  onSaved: (value) => _email = value!,
-                                  focusNode: _focusNodes[4],
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9@.\-_]')),
-                                  ],
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return null;
-                                    }
-                                    final emailRegex = RegExp(
-                                      r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                                    );
-                                    if (!emailRegex.hasMatch(value)) {
-                                      return 'Email manzil formati xato kiritilgan';
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: _isFocused[4] ? textYellowLight : Colors.white,
-                                    errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
-                                    hintText: "enterEmail".tr,
-                                    hintStyle: GoogleFonts.montserrat(),
-                                    labelStyle: GoogleFonts.montserrat(color: textGrey),
-                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
-                                    focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            verticalSpace(15),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'phoneNumber'.tr,
-                                  style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
-                                ),
-                                verticalSpace(8),
-                                TextFormField(
-                                  initialValue: "${state.userProfile.phone[0]}",
-                                  onSaved: (value) => _phoneNumber = value!,
-                                  focusNode: _focusNodes[5],
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                  validator: (value) {
-                                    if (value == null) {
-                                      return "phoneNumberErr1".tr;
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: _isFocused[5] ? textYellowLight : Colors.white,
-                                    errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
-                                    prefix: Text("+"),
-                                    hintText: "phoneNumber".tr,
-                                    hintStyle: GoogleFonts.montserrat(),
-                                    labelStyle: GoogleFonts.montserrat(color: textGrey),
-                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
-                                    focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            verticalSpace(15),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'birthday'.tr,
-                                  style: GoogleFonts.montserrat(fontWeight: FontWeight.w600, fontSize: 16),
-                                ),
-                                verticalSpace(8),
-                                TextFormField(
-                                  initialValue: _birthday.isEmpty ?  "${DateFormat('dd.MM.yyyy').format(DateTime.parse(state.userProfile.birthdate))}" : _birthday,
-                                  readOnly: true,
-                                  onSaved: (value) => _birthday = value!,
-                                  focusNode: _focusNodes[6],
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                  validator: (value) {
-                                    if (value == null) {
-                                      return "birthdayErr1".tr;
-                                    }
-                                    return null;
-                                  },
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: _isFocused[6] ? textYellowLight : Colors.white,
-                                    errorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
-                                    hintText: "enterBirthday".tr,
-                                    hintStyle: GoogleFonts.montserrat(),
-                                    labelStyle: GoogleFonts.montserrat(color: textGrey),
-                                    suffixIcon: GestureDetector(child: Icon(Icons.date_range, color: textGrey, size: 26), onTap: () => _openDatePicker(context)),
-                                    enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: lightGrey)),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: textYellow), borderRadius: BorderRadius.circular(12)),
-                                    focusedErrorBorder: OutlineInputBorder(borderSide: BorderSide(color: kTextDanger), borderRadius: BorderRadius.circular(12)),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ));
-                  }
-                  return Center(
-                    child: CustomEasyLoading(),
-                  );
-                },
+                            ))
+                      ],
+                    )
+                  ],
+                ),
               ),
             ],
           ),
@@ -399,5 +538,4 @@ class _UpdateProfileState extends State<UpdateProfile> {
       bottomPickerTheme: BottomPickerTheme.plumPlate,
     ).show(context);
   }
-
 }

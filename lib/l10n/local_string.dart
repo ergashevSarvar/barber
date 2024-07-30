@@ -87,7 +87,8 @@ class LocalString extends Translations {
           "region":"Viloyat",
           "enterRegion":"Viloyatni kiriting",
           "distrinct":"Tuman",
-          "enterDistrinct":"Tumanni kiriting"
+          "enterDistrinct":"Tumanni kiriting",
+          "save":"Saqlash"
         },
         "uz_UZ": {
           "lang": "Ўзбек тили",
@@ -172,7 +173,8 @@ class LocalString extends Translations {
           "region":"Вилоят",
           "enterRegion":"Вилоятни киритинг",
           "distrinct":"Туман",
-          "enterDistrinct":"Туманни киритинг"
+          "enterDistrinct":"Туманни киритинг",
+          "save":"Сақлаш"
         },
         "ru_RU": {
           "lang": "Русскый язык",
@@ -257,7 +259,8 @@ class LocalString extends Translations {
           "region":"Область",
           "enterRegion":"Введите Области",
           "distrinct":"Район",
-          "enterDistrinct":"Введите Район"
+          "enterDistrinct":"Введите Район",
+          "save":"Сохранить"
         },
       };
 }
