@@ -16,7 +16,7 @@ class CustomDivider extends StatelessWidget {
     return Row(children: [
       Expanded(
         child: new Container(
-            margin: const EdgeInsets.only(left: 25.0, right: 10.0),
+            margin: const EdgeInsets.only(left: 5.0, right: 10.0),
             child: Divider(
               thickness: 1,
             )),
@@ -27,7 +27,7 @@ class CustomDivider extends StatelessWidget {
       ),
       Expanded(
         child: new Container(
-            margin: const EdgeInsets.only(left: 10.0, right: 25.0),
+            margin: const EdgeInsets.only(left: 10.0, right: 5.0),
             child: Divider(
               thickness: 1,
             )),

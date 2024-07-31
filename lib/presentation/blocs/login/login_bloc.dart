@@ -20,7 +20,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<GetUserByIdRequest>(_fetchUserById);
   }
 
-  Future<void> _onLoginRequested(LoginRequested event, Emitter<LoginState> emit) async {
+  Future<bool> _onLoginRequested(LoginRequested event, Emitter<LoginState> emit) async {
     emit(LoginLoading());
     var deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -34,25 +34,35 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         body: {
           'username': event.username,
           'password': event.password,
-          'device_name' : androidInfo.device,
+          'device_name' : androidInfo.model,
           'device_id' : deviceId,
           'lang' : "$langId"
         },
       );
       Map<String, dynamic> res = jsonDecode(utf8.decode(response.bodyBytes));
       print(res);
-      if (response.statusCode == 200) {
+      if (res['status_code'] == 200) {
         emit(LoginSuccess(res['status_code_name'], res['token'], res['user_id']));
         prefs.setString("userId", res['user_id']);
-      } else if(response.statusCode == 401){
+        return true;
+      } else if(res['status_code'] == 401){
         emit(LoginFailure(res['status_code_name']));
+        return false;
       } else {
         emit(LoginFailure('Xatolik yuzaga keldi'));
+        return false;
       }
     } catch (e) {
       emit(LoginFailure('Xatolik yuzaga keldi: ${e.toString()}'));
+      return false;
     }
   }
+
+  // @override
+  // void onTransition(Transition<LoginEvent, LoginState> transition) {
+  //   super.onTransition(transition);
+  //   print(transition);
+  // }
 
   Future<void> _fetchUserById(GetUserByIdRequest event, Emitter<LoginState> emit) async {
     emit(FetchUserLoading());

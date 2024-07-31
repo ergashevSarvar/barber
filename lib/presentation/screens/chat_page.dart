@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/flashTabBar.dart';
-
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
@@ -14,9 +12,9 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("PAGE"),
+        child: Text("_ChatPageState"),
       ),
-      bottomNavigationBar: Flashtabbar(tabIndex: 1),
+      // bottomNavigationBar: Flashtabbar(tabIndex : 1),
     );
   }
 }

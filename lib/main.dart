@@ -9,21 +9,30 @@ import 'package:barber/utils/color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:barber/presentation/controller/init_controller.dart' as di;
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final onboarding = prefs.getBool("onboarding")??false;
+  final currentLang = prefs.getString("lang");
+  Locale locale = Locale("uz");
+  if(currentLang == "fr") {
+    locale = Locale("fr");
+  } else if (currentLang == "ru"){
+    locale = Locale("ru");
+  }
   await di.init();
-  runApp(MainApp());
+  runApp(MainApp(onboarding: onboarding, locale: locale));
 }
 
-class MainApp extends StatefulWidget {
-  @override
-  State<MainApp> createState() => _MainAppState();
-}
-
-class _MainAppState extends State<MainApp> {
+class MainApp extends StatelessWidget {
+  final bool onboarding;
+  final Locale locale;
+  MainApp({super.key, this.onboarding = false, required this.locale});
 
   final Routes _routes = Routes();
 
@@ -36,22 +45,24 @@ class _MainAppState extends State<MainApp> {
           BlocProvider(create: (context) => LogoutBloc()),
           BlocProvider(create: (context) => LangBloc()),
         ],
-        child: GetMaterialApp(
-          title: 'Barber management app',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: color2022),
-            useMaterial3: true,
+        child: ScreenUtilInit(
+          designSize: Size(360,690),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          child: GetMaterialApp(
+            title: 'Barber management app',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: kWhite),
+              useMaterial3: true,
+            ),
+            initialRoute: onboarding ? Routes.signinType : Routes.onBoarding,
+            translations: LocalString(),
+            locale: locale,
+            builder: EasyLoading.init(),
+            onGenerateRoute: Routes.generateRoute,
           ),
-          routes: {},
-          initialRoute: Routes.login,
-          translations: LocalString(),
-          locale: Locale("ru"),
-          builder: EasyLoading.init(),
-          onGenerateRoute: Routes.generateRoute,
         )
     );
   }
-
-
 }
